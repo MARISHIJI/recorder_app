@@ -218,7 +218,7 @@ document.addEventListener('keydown', e => {
         
         card.addEventListener('click', () => {
             renderSingle(note);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            //window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         card.appendChild(lbl);
