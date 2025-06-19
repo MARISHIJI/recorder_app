@@ -26,7 +26,7 @@ const NOTE_TO_DISPLAY = {
     'C3':'ドHi-Hi', 'C#3':'ド♯Hi-Hi'
 };
 const IMG_PATH = './img/';
-const FINGERING_IMG = {'C':'recorder_fingering_C.png','C#':'recorder_fingering_Cs.png','D':'recorder_fingering_D.png','D#':'recorder_fingering_Ds.png','E':'recorder_fingering_E.png','F':'recorder_fingering_F.png','F#':'recorder_fingering_Fs.png','G':'recorder_fingering_G.png','G#':'recorder_fingering_Gs.png','A':'recorder_fingering_A.png','A#':'recorder_fingering_As.png','B':'recorder_fingering_B.png','C2':'recorder_fingering_C2.png','C#2':'recorder_fingering_Cs2.png','D2':'recorder_fingering_D2.png','D#2':'recorder_fingering_Ds2.png','E2':'recorder_fingering_E2.png','F2':'recorder_fingering_F2.png','F#2':'recorder_fingering_Fs2.png','G2':'recorder_fingering_G2.png','G#2':'recorder_fingering_Gs2.png','A2':'recorder_fingering_A2.png','A#2':'recorder_fingering_As2.png','B2':'recorder_fingering_B2.png','C3':'recorder_fingering_C3.png','C#3':'recorder_fingering_Cs3.png'};
+const FINGERING_IMG = {'C':'fingering_C.png','C#':'fingering_Cs.png','D':'fingering_D.png','D#':'fingering_Ds.png','E':'fingering_E.png','F':'fingering_F.png','F#':'fingering_Fs.png','G':'fingering_G.png','G#':'fingering_Gs.png','A':'fingering_A.png','A#':'fingering_As.png','B':'fingering_B.png','C2':'fingering_C2.png','C#2':'fingering_Cs2.png','D2':'fingering_D2.png','D#2':'fingering_Ds2.png','E2':'fingering_E2.png','F2':'fingering_F2.png','F#2':'fingering_Fs2.png','G2':'fingering_G2.png','G#2':'fingering_Gs2.png','A2':'fingering_A2.png','A#2':'fingering_As2.png','B2':'fingering_B2.png','C3':'fingering_C3.png','C#3':'fingering_Cs3.png'};
 const AMBIGUOUS_NOTE_MAP = {};
 RECORDER_RANGE.forEach(note => {
     const baseWithSharp = note.replace(/[0-9]/, '');

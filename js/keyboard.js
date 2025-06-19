@@ -8,7 +8,7 @@ const NOTE_FREQUENCIES = {'C':523.25,'C#':554.37,'D':587.33,'D#':622.25,'E':659.
 const NOTE_TO_INDEX = Object.fromEntries(RECORDER_RANGE.map((n,i) => [n,i]));
 const IMG_PATH = './img/';
 // 画像ファイル名は音域に合わせて追加します
-const FINGERING_IMG = {'C':'recorder_fingering_C.png','C#':'recorder_fingering_Cs.png','D':'recorder_fingering_D.png','D#':'recorder_fingering_Ds.png','E':'recorder_fingering_E.png','F':'recorder_fingering_F.png','F#':'recorder_fingering_Fs.png','G':'recorder_fingering_G.png','G#':'recorder_fingering_Gs.png','A':'recorder_fingering_A.png','A#':'recorder_fingering_As.png','B':'recorder_fingering_B.png','C2':'recorder_fingering_C2.png','C#2':'recorder_fingering_Cs2.png','D2':'recorder_fingering_D2.png','D#2':'recorder_fingering_Ds2.png','E2':'recorder_fingering_E2.png','F2':'recorder_fingering_F2.png','F#2':'recorder_fingering_Fs2.png','G2':'recorder_fingering_G2.png','G#2':'recorder_fingering_Gs2.png','A2':'recorder_fingering_A2.png','A#2':'recorder_fingering_As2.png','B2':'recorder_fingering_B2.png','C3':'recorder_fingering_C3.png','C#3':'recorder_fingering_Cs3.png'};
+const FINGERING_IMG = {'C':'fingering_C.png','C#':'fingering_Cs.png','D':'fingering_D.png','D#':'fingering_Ds.png','E':'fingering_E.png','F':'fingering_F.png','F#':'fingering_Fs.png','G':'fingering_G.png','G#':'fingering_Gs.png','A':'fingering_A.png','A#':'fingering_As.png','B':'fingering_B.png','C2':'fingering_C2.png','C#2':'fingering_Cs2.png','D2':'fingering_D2.png','D#2':'fingering_Ds2.png','E2':'fingering_E2.png','F2':'fingering_F2.png','F#2':'fingering_Fs2.png','G2':'fingering_G2.png','G#2':'fingering_Gs2.png','A2':'fingering_A2.png','A#2':'fingering_As2.png','B2':'fingering_B2.png','C3':'fingering_C3.png','C#3':'fingering_Cs3.png'};
 const STAFF_IMG = {'C':'staff_C.png','C#':'staff_Cs.png','Db':'staff_Db.png','D':'staff_D.png','D#':'staff_Ds.png','Eb':'staff_Eb.png','E':'staff_E.png','F':'staff_F.png','F#':'staff_Fs.png','Gb':'staff_Gb.png','G':'staff_G.png','G#':'staff_Gs.png','Ab':'staff_Ab.png','A':'staff_A.png','A#':'staff_As.png','Bb':'staff_Bb.png','B':'staff_B.png','C2':'staff_C2.png','C#2':'staff_Cs2.png','Db2':'staff_Db2.png','D2':'staff_D2.png','D#2':'staff_Ds2.png','Eb2':'staff_Eb2.png','E2':'staff_E2.png','F2':'staff_F2.png','F#2':'staff_Fs2.png','Gb2':'staff_Gb2.png','G2':'staff_G2.png','G#2':'staff_Gs2.png','Ab2':'staff_Gs2.png','A2':'staff_A2.png','A#2':'staff_As2.png','Bb2':'staff_Bb2.png','B2':'staff_B2.png','C3':'staff_C3.png','C#3':'staff_Cs3.png','Db3':'staff_Cs3.png'};
 const STAFF_BLANK = 'staff_blank.png';
 const SHARP_TO_FLAT = {'C#':'Db','D#':'Eb','F#':'Gb','G#':'Ab','A#':'Bb','C#2':'Db2','D#2':'Eb2','F#2':'Gb2','G#2':'Ab2','A#2':'Bb2','C#3':'Db3'};
@@ -199,8 +199,8 @@ document.addEventListener('keydown', e => {
         lbl.className = 'note-label';
         lbl.textContent = labelText;
         const staffImgEl = document.createElement('img');
-        staffImgEl.style.width = '100px';
-        staffImgEl.style.maxHeight = '50px';
+        staffImgEl.style.width = '200px';
+        staffImgEl.style.maxHeight = '100px';
         staffImgEl.style.objectFit = 'contain';
         staffImgEl.style.border = '1px solid var(--border-color)';
         staffImgEl.style.borderRadius = '4px';

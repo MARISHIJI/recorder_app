@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 220px;
+    height: 440px;
     margin: 1.5rem auto;
     padding: 1rem;
     max-width: 320px;
@@ -105,7 +105,7 @@
     transform: translateY(-4px);
     box-shadow: 0 0 0 2px var(--primary-color), var(--shadow);
 }
-.card img { width: 80%; height: auto; }
+.card img { width: 50%; height: auto; }
 .note-label { font-weight: 500; font-size: 1rem; }
 
 .card.is-black-key {
