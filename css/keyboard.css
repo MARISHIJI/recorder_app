@@ -1,0 +1,135 @@
+/* --- 鍵盤用 運指表示エリア --- */
+#key-fingering-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 220px;
+    margin: 1.5rem auto;
+    padding: 1rem;
+    max-width: 320px;
+}
+#key-fingering-display .card {
+    box-shadow: none;
+    padding: 0;
+}
+#key-fingering-display span {
+    color: var(--text-light-color);
+}
+#key-fingering-display .note-label {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
+
+/* --- ピアノ + 五線譜 --- */
+.piano-staff {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: var(--surface-color);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.piano { position: relative; user-select: none; width: max-content; height: 160px; }
+.white-key, .black-key {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.white-key {
+    width: 36px;
+    height: 160px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    position: relative;
+    float: left;
+}
+.white-key.active {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+}
+.black-key {
+    position: absolute;
+    width: 24px;
+    height: 100px;
+    background: #333;
+    z-index: 1;
+}
+.black-key.active { background: var(--primary-color); }
+.key-label {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-light-color);
+    pointer-events: none;
+}
+.staff-img {
+    width: 240px;
+    height: 160px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 10px;
+}
+
+/* --- 運指表示ボード --- */
+.board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    justify-items: center;
+    margin-top: 2rem;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    min-height: 150px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 2px var(--primary-color), var(--shadow);
+}
+.card img { width: 80%; height: auto; }
+.note-label { font-weight: 500; font-size: 1rem; }
+
+.card.is-black-key {
+    background-color: #f8f9fa; /* A slightly off-white for black key cards */
+}
+
+/* --- レスポンシブ --- */
+@media(max-width: 768px) {
+    .board { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .card img { width: 80%; }
+    .piano-staff {
+        padding: 1.5rem;
+        flex-direction: column;
+    }
+    .piano-container {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        background: #fafafa;
+    }
+}
+@media(max-width: 480px) {
+    .board { grid-template-columns: repeat(2, 1fr); }
+}

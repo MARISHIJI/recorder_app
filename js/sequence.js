@@ -1,0 +1,77 @@
+/* ========= Web Audio & Data ========= */
+let audioContext;
+try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { console.error('Web Audio API unsupported'); }
+const RECORDER_RANGE = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C2','C#2','D2','D#2','E2','F2','F#2','G2','G#2','A2','A#2','B2','C3','C#3'];
+const NOTE_FREQUENCIES = {'C':523.25,'C#':554.37,'D':587.33,'D#':622.25,'E':659.25,'F':698.46,'F#':739.99,'G':783.99,'G#':830.61,'A':880.00,'A#':932.33,'B':987.77,'C2':1046.50,'C#2':1108.73,'D2':1174.66,'D#2':1244.51,'E2':1318.51,'F2':1396.91,'F#2':1479.98,'G2':1567.98,'G#2':1661.22,'A2':1760.00,'A#2':1864.66,'B2':1975.53,'C3':2093.00,'C#3':2217.46};
+const NOTE_TO_INDEX = Object.fromEntries(RECORDER_RANGE.map((n,i) => [n,i]));
+const INPUT_TO_NOTE = {
+    // Octave 1
+    'ど':'C','ど#':'C#','ど♯':'C#','れ':'D','れ#':'D#','れ♯':'D#','み':'E','ふぁ':'F','ふぁ#':'F#','ふぁ♯':'F#','そ':'G','そ#':'G#','そ♯':'G#','ら':'A','ら#':'A#','ら♯':'A#','し':'B',
+    'ド':'C','ド#':'C#','ド♯':'C#','レ':'D','レ#':'D#','レ♯':'D#','ミ':'E','ファ':'F','ファ#':'F#','ファ♯':'F#','ソ':'G','ソ#':'G#','ソ♯':'G#','ラ':'A','ラ#':'A#','ラ♯':'A#','シ':'B',
+    'C':'C','C#':'C#','D':'D','D#':'D#','E':'E','F':'F','F#':'F#','G':'G','G#':'G#','A':'A','A#':'A#','B':'B',
+    'Db':'C#','D♭':'C#','Eb':'D#','E♭':'D#','Gb':'F#','G♭':'F#','Ab':'G#','A♭':'G#','Bb':'A#','B♭':'A#',
+    // Octave 2
+    'ど2':'C2','ど#2':'C#2','ど♯2':'C#2','れ2':'D2','れ#2':'D#2','れ♯2':'D#2','み2':'E2','ふぁ2':'F2','ふぁ#2':'F#2','ふぁ♯2':'F#2','そ2':'G2','そ#2':'G#2','そ♯2':'G#2','ら2':'A2','ら#2':'A#2','ら♯2':'A#2','し2':'B2',
+    'どhi':'C2','どHi':'C2','れhi':'D2','れHi':'D2', 'ミhi':'E2','ミHi':'E2','ソhi':'G2','ソHi':'G2','ラhi':'A2','ラHi':'A2','シhi':'B2','シHi':'B2',
+    'ド2':'C2','ド#2':'C#2','ド♯2':'C#2','レ2':'D2','レ#2':'D#2','レ♯2':'D#2','ミ2':'E2','ファ2':'F2','ファ#2':'F#2','ファ♯2':'F#2','ソ2':'G2','ソ#2':'G#2','ソ♯2':'G#2','ラ2':'A2','ラ#2':'A#2','ラ♯2':'A#2','シ2':'B2',
+    'ドhi':'C2','ドHi':'C2','レhi':'D2','レHi':'D2', 'ミhi':'E2','ミHi':'E2','ソhi':'G2','ソHi':'G2','ラhi':'A2','ラHi':'A2','シhi':'B2','シHi':'B2',
+    'C2':'C2','C#2':'C#2','D2':'D2','D#2':'D#2','E2':'E2','F2':'F2','F#2':'F#2','G2':'G2','G#2':'G#2','A2':'A2','A#2':'A#2','B2':'B2',
+    'Db2':'C#2','D♭2':'C#2','Eb2':'D#2','E♭2':'D#2','Gb2':'F#2','G♭2':'F#2','Ab2':'G#2','A♭2':'G#2','Bb2':'A#2','B♭2':'A#2',
+    // Octave 3
+    'ど3':'C3','ど#3':'C#3','ド3':'C3','ド#3':'C#3','C3':'C3','C#3':'C#3', 'どhihi':'C3','ドhihi':'C3','ど#hihi':'C#3','ド#hihi':'C#3'
+};
+const NOTE_TO_DISPLAY = {
+    'C':'ド','C#':'ド♯','D':'レ','D#':'レ♯','E':'ミ','F':'ファ','F#':'ファ♯','G':'ソ','G#':'ソ♯','A':'ラ','A#':'ラ♯','B':'シ',
+    'C2':'ドHi','C#2':'ド♯Hi','D2':'レHi','D#2':'レ♯Hi','E2':'ミHi','F2':'ファHi','F#2':'ファ♯Hi','G2':'ソHi','G#2':'ソ♯Hi','A2':'ラHi','A#2':'ラ♯Hi','B2':'シHi',
+    'C3':'ドHi-Hi', 'C#3':'ド♯Hi-Hi'
+};
+const IMG_PATH = './img/';
+const FINGERING_IMG = {'C':'recorder_fingering_C.png','C#':'recorder_fingering_Cs.png','D':'recorder_fingering_D.png','D#':'recorder_fingering_Ds.png','E':'recorder_fingering_E.png','F':'recorder_fingering_F.png','F#':'recorder_fingering_Fs.png','G':'recorder_fingering_G.png','G#':'recorder_fingering_Gs.png','A':'recorder_fingering_A.png','A#':'recorder_fingering_As.png','B':'recorder_fingering_B.png','C2':'recorder_fingering_C2.png','C#2':'recorder_fingering_Cs2.png','D2':'recorder_fingering_D2.png','D#2':'recorder_fingering_Ds2.png','E2':'recorder_fingering_E2.png','F2':'recorder_fingering_F2.png','F#2':'recorder_fingering_Fs2.png','G2':'recorder_fingering_G2.png','G#2':'recorder_fingering_Gs2.png','A2':'recorder_fingering_A2.png','A#2':'recorder_fingering_As2.png','B2':'recorder_fingering_B2.png','C3':'recorder_fingering_C3.png','C#3':'recorder_fingering_Cs3.png'};
+const AMBIGUOUS_NOTE_MAP = {};
+RECORDER_RANGE.forEach(note => {
+    const baseWithSharp = note.replace(/[0-9]/, '');
+    if (!AMBIGUOUS_NOTE_MAP[baseWithSharp]) AMBIGUOUS_NOTE_MAP[baseWithSharp] = [];
+    AMBIGUOUS_NOTE_MAP[baseWithSharp].push(note);
+});
+
+/* ========= DOM Elements, State, Audio, and other functions remain the same... ========= */
+/* (The rest of the sequence.js file is identical to the one provided in the previous answer.) */
+const pianoRoot = document.getElementById('piano');
+const keyFingeringDisplay = document.getElementById('key-fingering-display');
+const keyboardSection = document.getElementById('keyboard-section');
+const seqInput = document.getElementById('seq-input');
+const boardSeq = document.getElementById('board-seq');
+const transposeControls = document.getElementById('transpose-controls');
+const transposeLevel = document.getElementById('transpose-level');
+const transposeUp = document.getElementById('transpose-up');
+const transposeDown = document.getElementById('transpose-down');
+const toggleKeyboardBtn = document.getElementById('toggle-keyboard-btn');
+const mobilePrevBtn = document.getElementById('mobile-prev-btn');
+const mobileNextBtn = document.getElementById('mobile-next-btn');
+const helpIcon = document.getElementById('help-icon');
+const helpBubble = document.getElementById('help-bubble');
+let currentSequenceIndex = null;
+let originalSequence = [];
+let transposition = 0;
+function playNote(freq, dur = 0.45) { if (!audioContext || !freq) return; if (audioContext.state === 'suspended') audioContext.resume(); const osc = audioContext.createOscillator(); const gain = audioContext.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(freq, audioContext.currentTime); gain.gain.setValueAtTime(0.5, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + dur); osc.connect(gain); gain.connect(audioContext.destination); osc.start(); osc.stop(audioContext.currentTime + dur); }
+function createCard(note, label) { const wrap = document.createElement('div'); wrap.className = 'card'; const lbl = document.createElement('div'); lbl.className = 'note-label'; lbl.textContent = label; if (note && note !== 'REST') { if (note.includes('3')) { lbl.style.color = 'var(--high-octave-color)'; } else if (note.includes('2')) { lbl.style.color = 'var(--accent-color)'; } } if (note === 'REST' || note === null) { wrap.classList.add('rest-card'); if (note === 'REST') { lbl.style.color = 'var(--text-light-color)'; } else { lbl.style.color = '#888'; } wrap.appendChild(lbl); return wrap; } const img = document.createElement('img'); img.onerror = () => { img.style.display = 'none'; lbl.style.color = '#888'; lbl.textContent += ' (画像なし)'; }; if (note && FINGERING_IMG[note]) { img.src = IMG_PATH + FINGERING_IMG[note]; img.alt = ``; } else { img.style.display = 'none'; } wrap.appendChild(lbl); wrap.appendChild(img); return wrap; }
+function highlightPianoKeys(note) { pianoRoot.querySelectorAll('.white-key, .black-key').forEach(k => k.classList.toggle('active', k.dataset.note === note)); }
+function renderSingle(note) { if (!RECORDER_RANGE.includes(note)) { highlightPianoKeys(null); keyFingeringDisplay.innerHTML = ''; const card = createCard(null, '音域外'); keyFingeringDisplay.appendChild(card); return; } const finalNote = transposeNote(note, transposition); highlightPianoKeys(note); keyFingeringDisplay.innerHTML = ''; if (!finalNote) { const card = createCard(null, '音域外'); keyFingeringDisplay.appendChild(card); return; } const disp = NOTE_TO_DISPLAY[finalNote] || finalNote; const card = createCard(finalNote, disp); keyFingeringDisplay.appendChild(card); playNote(NOTE_FREQUENCIES[finalNote]); }
+function buildPiano() { const wasVisible = keyboardSection.classList.contains('visible'); if (!wasVisible) { keyboardSection.style.visibility = 'hidden'; keyboardSection.classList.add('visible'); } pianoRoot.innerHTML = ''; const PIANO_RANGE = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C2','C#2','D2','D#2','E2','F2','F#2','G2','G#2','A2','A#2','B2','C3','C#3','D3']; const whiteKeysData = PIANO_RANGE.filter(n => !n.includes('#')); const blackKeysData = PIANO_RANGE.filter(n => n.includes('#')); const whiteKeyElements = {}; const noteToDoremi = { 'C': 'ド', 'D': 'レ', 'E': 'ミ', 'F': 'ファ', 'G': 'ソ', 'A': 'ラ', 'B': 'シ' }; whiteKeysData.forEach(noteName => { const el = document.createElement('div'); el.className = 'white-key'; el.dataset.note = noteName; if (RECORDER_RANGE.includes(noteName)) { el.addEventListener('click', () => renderSingle(noteName)); } else { el.style.background = '#eee'; el.style.cursor = 'not-allowed'; } const baseNote = noteName.replace(/[0-9]/, ''); const doremiText = noteToDoremi[baseNote]; if (doremiText) { const label = document.createElement('div'); label.className = 'key-label'; let labelText = doremiText; if (noteName.includes('2')) labelText += "'"; if (noteName.includes('3')) labelText += "''"; label.textContent = labelText; el.appendChild(label); } pianoRoot.appendChild(el); whiteKeyElements[noteName] = el; }); blackKeysData.forEach(noteName => { const parentWhiteKeyName = noteName.replace('#', ''); const parentElement = whiteKeyElements[parentWhiteKeyName] || whiteKeyElements[parentWhiteKeyName.slice(0, -1)]; if (parentElement) { const blackKeyElement = document.createElement('div'); blackKeyElement.className = 'black-key'; blackKeyElement.dataset.note = noteName; if (RECORDER_RANGE.includes(noteName)) { blackKeyElement.addEventListener('click', e => { e.stopPropagation(); renderSingle(noteName); }); } else { blackKeyElement.style.background = '#666'; blackKeyElement.style.cursor = 'not-allowed'; } const whiteKeyWidth = 36; const blackKeyWidth = 24; blackKeyElement.style.left = `${parentElement.offsetLeft + whiteKeyWidth - (blackKeyWidth / 2)}px`; pianoRoot.appendChild(blackKeyElement); } }); if (!wasVisible) { keyboardSection.classList.remove('visible'); keyboardSection.style.visibility = 'visible'; } }
+const ESCAPED_KEYS = Object.keys(INPUT_TO_NOTE).sort((a,b) => b.length - a.length).map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+function transposeNote(note, step) { if (note === 'REST' || note === 'LINEBREAK') return note; const idx = NOTE_TO_INDEX[note]; if (idx === undefined) return null; const newIdx = idx + step; if (newIdx < 0 || newIdx >= RECORDER_RANGE.length) return null; return RECORDER_RANGE[newIdx]; }
+function selectSequenceNote(index, playSound = true) { if (index < 0 || index >= originalSequence.length) return; currentSequenceIndex = index; let cardIndex = 0; let dataIndex = 0; while(dataIndex < index) { if(originalSequence[dataIndex].note !== 'LINEBREAK') cardIndex++; dataIndex++; } const cards = boardSeq.querySelectorAll('.card'); cards.forEach((c, i) => c.classList.toggle('active', i === cardIndex)); const activeCard = cards[cardIndex]; if (activeCard) { activeCard.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' }); } const item = originalSequence[index]; if (item.note === 'REST' || item.note === 'LINEBREAK') return; const tNote = transposeNote(item.note, transposition); if (tNote && playSound) { playNote(NOTE_FREQUENCIES[tNote]); } }
+function renderTransposedSequence() { boardSeq.innerHTML = ''; const lastValidIndex = currentSequenceIndex; if (originalSequence.length === 0) { transposeControls.style.display = 'none'; return; } transposeControls.style.display = 'flex'; transposeLevel.textContent = `Key: ${transposition > 0 ? '+' : ''}${transposition}`; originalSequence.forEach((item, index) => { let card; if (item.note === 'LINEBREAK') { const brEl = document.createElement('div'); brEl.style.gridColumn = '1 / -1'; brEl.style.height = '0'; boardSeq.appendChild(brEl); return; } if (item.note === 'REST') { card = createCard('REST', '休'); } else { const tNote = transposeNote(item.note, transposition); if (tNote) { const disp = NOTE_TO_DISPLAY[tNote] || tNote; const lbl = item.lyric ? `${disp}（${item.lyric}）` : disp; card = createCard(tNote, lbl); } else { const lbl = item.lyric ? `音域外（${item.lyric}）` : '音域外'; card = createCard(null, lbl); } } card.style.cursor = 'pointer'; card.addEventListener('click', () => selectSequenceNote(index, true)); card.addEventListener('contextmenu', (e) => { e.preventDefault(); /* Can add advanced features here */ }); card.addEventListener('dblclick', (e) => { e.preventDefault(); /* Can add advanced features here */ }); boardSeq.appendChild(card); }); if (lastValidIndex !== null && lastValidIndex < originalSequence.length) { selectSequenceNote(lastValidIndex, false); } }
+function parseAndResolveSequence(rawText) { if (!rawText.trim()) return []; const tokenRegex = new RegExp(`(${ESCAPED_KEYS.join('|')})(?:（([^）]+)）)?|([ 　]+)|(\\n)`, 'gi'); const matches = [...rawText.matchAll(tokenRegex)]; if (matches.length === 0) { boardSeq.innerHTML = '<p style="grid-column:1/-1;color:var(--text-light-color);">認識できる音名がありませんでした。</p>'; return []; } const resolvedSequence = matches.map(m => { const [_, noteToken, lyricToken, spaceToken, newlineToken] = m; if (newlineToken) return { note: 'LINEBREAK' }; if (spaceToken) return { note: 'REST' }; const noteName = (noteToken || '').toUpperCase().replace('♭', 'b').replace('♯', '#'); let note = INPUT_TO_NOTE[noteName] || INPUT_TO_NOTE[noteToken]; if (!note) return null; return { note: note, lyric: lyricToken || '' }; }).filter(Boolean); return resolvedSequence; }
+function updateApp() { const rawText = seqInput.value; const newUrl = rawText.trim() ? `${window.location.pathname}?sequence=${encodeURIComponent(rawText)}` : window.location.pathname; history.replaceState({ sequence: rawText }, '', newUrl); originalSequence = parseAndResolveSequence(rawText); currentSequenceIndex = null; renderTransposedSequence(); }
+function navigateSequence(direction) { if (originalSequence.length === 0) return; let startIndex; if (currentSequenceIndex === null) { startIndex = direction === 1 ? -1 : originalSequence.length; } else { startIndex = currentSequenceIndex; } let nextIndex = startIndex; do { nextIndex += direction; } while ( nextIndex >= 0 && nextIndex < originalSequence.length && originalSequence[nextIndex].note === 'LINEBREAK' ); if (nextIndex >= 0 && nextIndex < originalSequence.length) { selectSequenceNote(nextIndex, true); } }
+transposeUp.addEventListener('click', () => { transposition++; renderTransposedSequence(); });
+transposeDown.addEventListener('click', () => { transposition--; renderTransposedSequence(); });
+mobilePrevBtn.addEventListener('click', () => navigateSequence(-1));
+mobileNextBtn.addEventListener('click', () => navigateSequence(1));
+document.addEventListener('keydown', e => { if (document.activeElement === seqInput) return; if (e.key === 'ArrowLeft') { e.preventDefault(); navigateSequence(-1); } else if (e.key === 'ArrowRight') { e.preventDefault(); navigateSequence(1); } });
+window.addEventListener('load', () => { buildPiano(); const params = new URLSearchParams(window.location.search); const sequence = params.get('sequence'); if (sequence) { seqInput.value = decodeURIComponent(sequence); } transposition = 0; updateApp(); });
+seqInput.addEventListener('input', updateApp);
+toggleKeyboardBtn.addEventListener('click', () => { keyboardSection.classList.toggle('visible'); if (keyboardSection.classList.contains('visible')) { toggleKeyboardBtn.textContent = 'キーボードを非表示'; } else { toggleKeyboardBtn.textContent = 'キーボードを表示'; highlightPianoKeys(null); } });
+helpIcon.addEventListener('click', (event) => { event.stopPropagation(); helpBubble.classList.toggle('visible'); });
+document.addEventListener('click', (event) => { if (helpBubble.classList.contains('visible') && !helpIcon.contains(event.target) && !helpBubble.contains(event.target)) { helpBubble.classList.remove('visible'); } });

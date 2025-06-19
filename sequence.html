@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ドレミで入力 - しーちゃんのリコーダー練習所</title> <meta name="description" content="リコーダーの音名やドレミを入力すると、リアルタイムで運指と楽譜が表示される無料ツール。練習曲の作成や音域確認に便利です。"> <meta name="keywords" content="リコーダー, 運指, 楽譜, 音名入力, ドレミ, コード, 作成, シーケンス, 無料, オンライン, 移調, 練習, トレーナー"> <meta name="author" content="しーちゃん">
+<meta name="robots" content="index, follow"> <link rel="canonical" href="https://your-recorder-site.pages.dev/sequence.html"> <meta property="og:url" content="https://your-recorder-site.pages.dev/sequence.html"> <meta property="og:type" content="website">
+<meta property="og:title" content="音名で入力 - しーちゃんのリコーダー練習所"> <meta property="og:description" content="リコーダーの音名・ドレミ入力で運指と楽譜をリアルタイム表示！無料のオンラインツールでオリジナル練習曲を作成しよう。"> <meta property="og:site_name" content="しーちゃんのリコーダー練習所">
+<meta property="og:image" content="https://your-recorder-site.pages.dev/img/ogp-sequence.png"> <meta property="og:locale" content="ja_JP">
+
+<meta name="twitter:card" content="summary_large_image"> <meta name="twitter:site" content="@yourtwitterhandle"> <meta name="twitter:creator" content="@yourtwitterhandle"> <meta name="twitter:title" content="音名で入力 - しーちゃんのリコーダー練習所">
+<meta name="twitter:description" content="リコーダーの音名・ドレミ入力で運指と楽譜をリアルタイム表示！無料のオンラインツールでオリジナル練習曲を作成しよう。">
+<meta name="twitter:image" content="https://your-recorder-site.pages.dev/img/ogp-sequence.png"> <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css"/>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/sequence.css">
+
+<link rel="icon" type="image/png" sizes="48x48" href="favicon/favicon-48.png">
+<link rel="icon" type="image/png" sizes="64x64"   href="favicon/favicon-64.png">
+<link rel="icon" type="image/png" sizes="128x128" href="favicon/favicon-128.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon/favicon-192.png">
+<link rel="icon" type="image/png" sizes="256x256" href="favicon/favicon-256.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon-180.png">
+<link rel="shortcut icon" href="favicon/favicon.ico">
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "音名で入力 - しーちゃんのリコーダー練習所",
+      "description": "リコーダーの音名やドレミを入力すると、リアルタイムで運指と楽譜が表示される無料ツール。練習曲の作成や音域確認に便利です。",
+      "url": "https://your-recorder-site.pages.dev/sequence.html",
+      "inLanguage": "ja",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "しーちゃんのリコーダー練習所",
+        "url": "https://your-recorder-site.pages.dev/"
+      }
+    }
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-your-ad-client-id"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<div class="container">
+    <main>
+        <div class="help-wrapper">
+            <p>音名やドレミを入力すると運指がリアルタイムで表示されます。<span id="help-icon">?</span></p>
+            <div id="help-bubble">
+                <h4>入力のヒント</h4>
+                <ul class="help-list">
+                    <li><strong>ドレミ</strong>「ド」「レ」「ミ」…</li>
+                    <li><strong>音名</strong>「C」「D」「E」…</li>
+                    <li><strong>シャープ</strong>「ド#」「ド♯」「C#」</li>
+                    <li><strong>フラット</strong>「レb」「レ♭」「Db」</li>
+                    <li><strong>高い音</strong>「ド2」「ドhi」「ドHi」</li>
+                    <li><strong>休符</strong>半角または全角スペース</li>
+                    <li><strong>改行</strong>そのまま改行</li>
+                    <li><strong>歌詞</strong>音の後に括弧で囲む</li>
+                </ul>
+                <p class="help-footer">
+                    音域が2つある音は、カードをダブルクリックか右クリックで切り替えられます。
+                </p>
+            </div>
+        </div>
+
+        <div class="seq-wrapper">
+            <textarea id="seq-input" rows="4" placeholder="例: ソ ラ シ ド2&#10;レ2 ミ2 ファ2 ソ2"></textarea>
+            <button id="toggle-keyboard-btn" class="btn">キーボードを表示</button>
+        </div>
+        
+        <div id="keyboard-section" class="keyboard-section">
+            <div id="key-fingering-display">
+                <span>キーを押してください</span>
+            </div>
+            <div class="piano-container">
+                <div id="piano" class="piano"></div>
+            </div>
+        </div>
+        <div id="transpose-controls" class="transpose-controls">
+            <button id="transpose-down" class="btn">- Key</button>
+            <span id="transpose-level">Key: 0</span>
+            <button id="transpose-up" class="btn">+ Key</button>
+        </div>
+
+        <div id="board-seq" class="board"></div>
+    </main>
+</div>
+
+<div class="mobile-nav-controls">
+    <button id="mobile-prev-btn" class="mobile-nav-btn">◀</button>
+    <button id="mobile-next-btn" class="mobile-nav-btn">▶</button>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YOUR_GA_ID');
+</script>
+
+<script src="js/loader.js"></script>
+<script src="js/sequence.js"></script>
+</body>
+</html>

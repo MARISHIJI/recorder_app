@@ -1,0 +1,236 @@
+/* --- デザインシステム (オレンジテーマ) --- */
+:root {
+    --primary-color: #f5a623;     /* 温かみのあるオレンジ */
+    --primary-light: #fdebd0;     /* 明るいオレンジ (クリーム色) */
+    --background-color: #fef5e7;   /* 背景色 (ごく薄いオレンジ) */
+    --surface-color: #ffffff;      /* カードなどの背景色 */
+    --text-color: #5d4037;      /* 文字色 (ダークブラウン) */
+    --text-light-color: #a1887f;   /* 淡い文字色 (ブラウン) */
+    --border-color: #f8c471;      /* 境界線 (オレンジ系) */
+    --accent-color: #4a90e2;      /* アクセント (ブルー) */
+    --radius: 16px;                /* 角丸の半径 (より丸く) */
+    --shadow: 0 4px 10px rgba(245, 166, 35, 0.2); /* 影 (ソフトなオレンジ) */
+    /* オクターブ表示用の色は以前のものを維持 */
+    --high-octave-color: #d93b3b;
+    --low-octave-color: #4a80e2;
+}
+
+/* --- 基本設定 --- */
+* { box-sizing: border-box; }
+body {
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", system-ui, sans-serif;
+    margin: 0;
+    background: var(--background-color);
+    color: var(--text-color);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}
+
+/* --- ヘッダー & ナビゲーション (オレンジテーマ) --- */
+header {
+    background: #fff;
+    padding: 1.5rem 0 1rem 0;
+    margin-bottom: 2.5rem;
+    border-bottom: 3px dashed var(--border-color);
+}
+
+.logo-container {
+    text-align: center; /* ロゴを中央に配置 */
+    margin-bottom: 1.5rem; /* ナビゲーションとの間に余白 */
+}
+
+.site-logo {
+    max-height: 80%;
+    max-width: 500px;
+    width: auto;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.site-logo:hover {
+    transform: scale(1.05); /* ホバー時に少し拡大 */
+}
+
+.main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.main-nav a {
+    text-decoration: none;
+    color: var(--text-light-color);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px; /* 錠剤型 */
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+.main-nav a:hover {
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+    transform: translateY(-3px) scale(1.05);
+}
+.main-nav a.current {
+    color: #fff;
+    background-color: var(--primary-color);
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(245, 166, 35, 0.4);
+}
+
+main { flex: 1; }
+main > p {
+    color: var(--text-light-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+/* --- ボタン (オレンジテーマ) --- */
+.btn {
+    margin-top: 1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--primary-color);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    box-shadow: 0 4px 0 #c47a00; /* ボタンに厚みを出す (暗いオレンジ) */
+    text-decoration: none;
+    display: inline-block;
+}
+.btn:hover {
+    background-color: #f7b24a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #c47a00;
+}
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #c47a00;
+}
+
+
+/* --- レスポンシブ (共通) --- */
+@media(max-width: 768px) {
+    .container { padding: 1rem; }
+    header h1 { font-size: 1.5rem; }
+    .header-icon { font-size: 1.8rem; }
+    .site-logo {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        transition: transform 0.3s ease;
+    }
+    .footer-logo {
+        max-height: 100%;
+    }
+}
+
+
+/* --- フッター (オレンジテーマ) --- */
+.site-footer {
+    padding: 1.5rem 0;
+    margin-top: 1rem;
+    background-color: #fff;
+    border-top: 3px dashed var(--border-color);
+    color: var(--text-light-color);
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+.footer-logo {
+    max-height: 70%;
+    max-width: 300px;
+    margin-bottom: 1rem;
+    margin: 0 auto;
+}
+
+/* --- フッターナビゲーション (追加) --- */
+.footer-nav {
+    margin: 1rem 0;
+}
+.footer-nav a {
+    color: var(--text-light-color);
+    text-decoration: none;
+    margin: 0 0.75rem;
+    transition: color 0.2s;
+}
+.footer-nav a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* --- 静的ページ用コンテンツスタイル (追加) --- */
+.article-content {
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.article-content h1 {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1rem;
+    color: var(--text-color);
+}
+.article-content h2 {
+    font-size: 1.4rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-left: 5px solid var(--primary-color);
+    padding-left: 0.8rem;
+    color: var(--text-color);
+}
+.article-content p, .article-content ul {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: var(--text-color); /* main > p の薄い色を上書き */
+}
+.article-content ul {
+    padding-left: 1.5rem;
+}
+.article-content li {
+    margin-bottom: 0.5rem;
+}
+.article-content a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+.article-content a:hover {
+    text-decoration: none;
+}
+.contact-link {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+@media(max-width: 768px) {
+    .article-content {
+        padding: 1.5rem;
+    }
+    .article-content h1 {
+        font-size: 1.5rem;
+    }
+    .article-content h2 {
+        font-size: 1.2rem;
+    }
+}

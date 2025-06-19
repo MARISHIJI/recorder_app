@@ -1,0 +1,89 @@
+/* --- ボタン --- */
+.btn {
+    margin-top: 1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    display: inline-block;
+    text-decoration: none;
+}
+.btn:hover { 
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    transform: translateY(-2px); 
+}
+
+/* --- サンプル曲リスト --- */
+.sample-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+.song-item {
+    background: var(--surface-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s ease;
+    padding: 0;
+}
+.song-item[open] {
+    box-shadow: 0 6px 15px rgba(245, 166, 35, 0.3);
+}
+.song-item summary {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.1rem;
+    outline: none;
+    list-style: none; /* Marker removal */
+}
+.song-item summary::-webkit-details-marker {
+    display: none; /* Marker removal for Chrome/Safari */
+}
+.song-item summary::after {
+    content: '開く';
+    float: right;
+    font-size: 0.9rem;
+    color: var(--text-light-color);
+}
+.song-item[open] summary::after {
+    content: '閉じる';
+}
+
+.song-details-content {
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+.song-details-content pre {
+    white-space: pre-wrap;
+    background: var(--background-color);
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+.song-details-content .btn {
+    margin-top: 1rem;
+}
+
+/* --- レスポンシブ --- */
+@media(max-width: 768px) {
+    .song-item summary {
+        padding: 1.5rem;
+    }
+   .song-details-content {
+        padding: 0.5rem 1rem 1.5rem 1rem;
+   }
+}
