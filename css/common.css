@@ -212,7 +212,7 @@ main > p {
     margin-bottom: 0.5rem;
 }
 .article-content a {
-    color: var(--primary-color);
+    color: white;
     text-decoration: underline;
 }
 .article-content a:hover {
