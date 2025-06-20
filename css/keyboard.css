@@ -1,144 +1,106 @@
-/* --- 鍵盤用 運指表示エリア --- */
-#key-fingering-display {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    min-height: 160px;
-    margin: 0;
-    padding: 1rem;
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-}
-#key-fingering-display .card {
-    box-shadow: none;
-    padding: 0;
-}
-#key-fingering-display span {
-    color: var(--text-light-color);
-}
-#key-fingering-display .note-label {
-    font-size: 1.5rem;
+/* --- デザインシステム (オレンジテーマ) --- */
+:root{
+    --primary-color:#f5a623;     /* 温かみのあるオレンジ */
+    --primary-light:#fdebd0;     /* 明るいオレンジ (クリーム色) */
+    --background-color:#fef5e7;  /* 背景 (ごく薄いオレンジ) */
+    --surface-color:#ffffff;     /* カードなどの背景色 */
+    --text-color:#5d4037;        /* ダークブラウン */
+    --text-light-color:#a1887f;  /* 淡い文字色 */
+    --border-color:#f8c471;      /* 境界線 (オレンジ系) */
+    --accent-color:#4a90e2;      /* 補助色 (ブルー) ― 使用しませんが残しておく */
+    --radius:16px;
+    --shadow:0 4px 10px rgba(245,166,35,.2);
 }
 
-/* --- ピアノ + 五線譜 --- */
-.piano-staff {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    background: var(--surface-color);
-    padding: 2rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+/* --- 共通リセット --- */
+*{box-sizing:border-box}
+body{
+    font-family:"M PLUS Rounded 1c","Noto Sans JP",system-ui,sans-serif;
+    margin:0;background:var(--background-color);color:var(--text-color);
+}
+.container{max-width:960px;margin:0 auto;padding:1rem 2rem}
+
+/* --- （ヘッダー・フッター・ボタン類は既存のまま） --- */
+
+/* ------------------------------------------------------------------
+   鍵盤 + 五線譜 + 運指カード　※ index.html 用
+------------------------------------------------------------------ */
+
+/* === 選択した音のミニカード (左側) === */
+#key-fingering-display{
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    width:200px;min-height:160px;margin:0;padding:1rem;
+    background:var(--surface-color);border:1px solid var(--border-color);border-radius:var(--radius);
+}
+#key-fingering-display .card{box-shadow:none;padding:0}
+#key-fingering-display .note-label{font-size:1.5rem;color:var(--text-light-color)}
+
+/* === ピアノ鍵盤 + 五線譜 === */
+.piano-staff{
+    display:flex;gap:2rem;align-items:center;justify-content:center;flex-wrap:wrap;
+    background:var(--surface-color);padding:2rem;border-radius:var(--radius);box-shadow:var(--shadow);
 }
 
-/* （以下、既存スタイルは変更なし） */
-.piano { position: relative; user-select: none; width: max-content; height: 160px; }
-.white-key, .black-key {
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
+/* ---- キー ---- */
+.piano{position:relative;user-select:none;width:max-content;height:160px}
+.white-key,.black-key{display:inline-block;cursor:pointer;border-radius:4px;transition:background .2s}
+.white-key{
+    width:36px;height:160px;background:#fff;border:1px solid #e0e0e0;position:relative;float:left
 }
-.white-key {
-    width: 36px;
-    height: 160px;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    position: relative;
-    float: left;
-}
-.white-key.active {
-    background: var(--primary-light);
-    border-color: var(--primary-color);
-}
-.black-key {
-    position: absolute;
-    width: 24px;
-    height: 100px;
-    background: #333;
-    z-index: 1;
-}
-.black-key.active { background: var(--primary-color); }
-.key-label {
-    position: absolute;
-    bottom: 8px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    color: var(--text-light-color);
-    pointer-events: none;
-}
-.staff-img {
-    width: 240px;
-    height: 160px;
-    object-fit: contain;
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 10px;
+.white-key.active{background:var(--primary-light);border-color:var(--primary-color)}
+.black-key{position:absolute;width:24px;height:100px;background:#333;z-index:1}
+.black-key.active{background:var(--primary-color)}
+.key-label{
+    position:absolute;bottom:8px;left:0;width:100%;text-align:center;
+    font-size:14px;color:var(--text-light-color);pointer-events:none
 }
 
-/* --- 運指表示ボード --- */
-.board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    justify-items: center;
-    margin-top: 2rem;
-}
-.card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    background: var(--surface-color);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    width: 100%;
-    min-height: 150px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 0 2px var(--primary-color), var(--shadow);
-}
-.card img { width: 50%; height: auto; }
-.note-label { font-weight: 500; font-size: 1rem; }
-
-.card.is-black-key {
-    background-color: #f8f9fa; /* A slightly off-white for black key cards */
+/* ---- 五線譜画像 ---- */
+.staff-img{
+    width:240px;height:160px;object-fit:contain;
+    background:#fff;border:1px solid var(--border-color);border-radius:var(--radius);padding:10px;
 }
 
-/* --- レスポンシブ --- */
-@media(max-width: 768px) {
-    .board { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .card img { width: 80%; max-width: 80px; }
-    .piano-staff {
-        padding: 1.5rem;
-        flex-direction: column;
+/* ------------------------------------------------------------------
+   運指カードボード
+------------------------------------------------------------------ */
+.board{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;justify-items:center;margin-top:2rem;
+}
+.card{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
+    padding:1rem;background:var(--surface-color);border-radius:var(--radius);box-shadow:var(--shadow);
+    width:100%;min-height:150px;
+    transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+    border:2px solid transparent;-webkit-tap-highlight-color:transparent;
+}
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 0 0 2px var(--primary-color),var(--shadow);
+}
+.card img{width:50%;height:auto}
+.note-label{font-weight:500;font-size:1rem}
+.card.is-black-key{background:#f8f9fa}
+
+/* === ★ 選択中カード（オレンジ枠のみ） === */
+.card.active{
+    border:0.2px solid var(--primary-color);
+    box-shadow:0 0 0 2px var(--primary-color),var(--shadow);
+}
+
+/* ------------------------------------------------------------------
+   レスポンシブ
+------------------------------------------------------------------ */
+@media(max-width:768px){
+    .board{grid-template-columns:repeat(3,1fr);gap:1rem}
+    .card img{width:80%;max-width:80px}
+    .piano-staff{padding:1.5rem;flex-direction:column}
+    .piano-container{
+        width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px;
+        border:1px solid var(--border-color);border-radius:var(--radius);background:#fafafa
     }
-    .piano-container {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 10px;
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-        background: #fafafa;
-    }
-    #key-fingering-display {
-        width: 100%;
-        margin-bottom: 1rem;
-    }
+    #key-fingering-display{width:100%;margin-bottom:1rem}
 }
-@media(max-width: 480px) {
-    .board { grid-template-columns: repeat(2, 1fr); }
+@media(max-width:480px){
+    .board{grid-template-columns:repeat(2,1fr)}
 }
